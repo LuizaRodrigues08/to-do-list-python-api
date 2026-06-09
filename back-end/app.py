@@ -31,13 +31,6 @@ def get_task_by_id(id):
     for task in tasks:
         if task.get('id') == id:
             return jsonify(task)
-# CRUD = CREATE(POST), READ(GET), UPDATE(PUT) E DELETE 
-# MÉTODOS HTTP:
-# GET = PEGAR, LER
-# PUT = UPDATE, ATUALIZAR COMPLETO
-# POST = CRIAR, PUBLICAR
-# DELETE = EXCLUIR
-# PATCH = ATUALIZAR UMA PARTE 
 
 @app.route('/tasks/<int:id>', methods=['PUT'])
 def update_task_by_id(id):
@@ -47,6 +40,18 @@ def update_task_by_id(id):
             tasks[index].update(updated_task)
             return jsonify(tasks[index])
 
+@app.route('/tasks', methods=['POST'])
+def create_task():
+    new_task = request.get_json()
+    tasks.append(new_task)
+    return jsonify(tasks)
+
+@app.route('/tasks/<int:id>', methods=['DELETE'])
+def delete_task_by_id(id):
+    for index, task in enumerate(tasks):
+        if task.get('id') == id:
+            del tasks[index]
+            return jsonify(tasks)
 
 
 app.run(port=5000, host='localhost', debug=True)
